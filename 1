@@ -1,0 +1,29 @@
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo mysql.server stop 
+Shutting down MySQL
+. SUCCESS! 
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql.server start
+Starting MySQL
+./opt/homebrew/Cellar/mysql/8.3.0/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.3.0/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.3.0/bin/mysqld_safe: line 199: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.3.0/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+ ERROR! The server quit without updating PID file (/opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid).
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo mysql.server start
+Starting MySQL
+... SUCCESS! 
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql_secure_installation
+
+Securing the MySQL server deployment.
+
+Enter password for user root: 
+Error: Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo touch /tmp/mysql.sock
+Password:
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql_secure_installation 
+
+Securing the MySQL server deployment.
+
+Enter password for user root: 
+Error: Can't connect to local MySQL server through socket '/tmp/mysql.sock' (38)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql -u root
+ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/tmp/mysql.sock' (38)
