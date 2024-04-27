@@ -1,0 +1,776 @@
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew cleanup
+Warning: Skipping openssl@3: most recent version 3.2.0_1 not installed
+Removing: /Users/suzukitakuya/Library/Logs/Homebrew/openssl@3... (64B)
+Removing: /Users/suzukitakuya/Library/Logs/Homebrew/ca-certificates... (64B)
+Removing: /Users/suzukitakuya/Library/Logs/Homebrew/openssl@1.1... (64B)
+Pruned 0 symbolic links and 2 directories from /opt/homebrew
+
+Removing: /opt/homebrew/Library/Homebrew/vendor/portable-ruby/2.6.10_1... (1,393 files, 24.3MB)
+==> This operation has freed approximately 24.3MB of disk space.
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo rm -rf /usr/local/Cellar/mysql*
+sudo rm -rf /usr/local/bin/mysql*
+sudo rm -rf /usr/local/var/mysql*
+sudo rm -rf /usr/local/etc/my.cnf
+sudo rm -rf /usr/local/share/mysql*
+sudo rm -rf /usr/local/opt/mysql*
+sudo rm -rf /etc/my.cnf
+
+zsh: no matches found: /usr/local/Cellar/mysql*
+zsh: no matches found: /usr/local/bin/mysql*
+zsh: no matches found: /usr/local/var/mysql*
+Password:
+zsh: no matches found: /usr/local/share/mysql*
+zsh: no matches found: /usr/local/opt/mysql*
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew install mysql 
+Running `brew update --auto-update`...
+==> Auto-updated Homebrew!
+Updated 3 taps (homebrew/services, homebrew/core and homebrew/cask).
+==> New Formulae
+argc               cargo-sweep        chisel-tunnel      direwolf           drogon             glbinding@2        open-simh          opensca-cli        purr               redress            retire
+==> New Casks
+anka-build-cloud-controller               blockstream-green                         garmin-basecamp                           sakura                                    screens-assist
+anka-build-cloud-registry                 egovframedev                              reader                                    salt                                      truhu
+
+You have 2 outdated formulae installed.
+
+==> Downloading https://ghcr.io/v2/homebrew/core/mysql/manifests/8.2.0_1
+Already downloaded: /Users/suzukitakuya/Library/Caches/Homebrew/downloads/76942c24dd093d4f935ed9c73b0b9b1acf9e6a9b58b246bf75af000362b0578d--mysql-8.2.0_1.bottle_manifest.json
+==> Fetching mysql
+==> Downloading https://ghcr.io/v2/homebrew/core/mysql/blobs/sha256:46f8879999ac802d00a1cefb2333cc9e6cde0a0969bb78a80b4aa20a1d0cf2ac
+Already downloaded: /Users/suzukitakuya/Library/Caches/Homebrew/downloads/c17c2fe4b317ece1774dbcbd29585dab9f6a25e98aa6b7effb05c3df36038689--mysql--8.2.0_1.arm64_monterey.bottle.tar.gz
+==> Pouring mysql--8.2.0_1.arm64_monterey.bottle.tar.gz
+==> Caveats
+We've installed your MySQL database without a root password. To secure it run:
+    mysql_secure_installation
+
+MySQL is configured to only allow connections from localhost by default
+
+To connect run:
+    mysql -u root
+
+To start mysql now and restart at login:
+  brew services start mysql
+Or, if you don't want/need a background service you can just run:
+  /opt/homebrew/opt/mysql/bin/mysqld_safe --datadir\=/opt/homebrew/var/mysql
+==> Summary
+🍺  /opt/homebrew/Cellar/mysql/8.2.0_1: 326 files, 308.7MB
+==> Running `brew cleanup mysql`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew services start mysql
+==> Successfully started `mysql` (label: homebrew.mxcl.mysql)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew services stop mysql 
+Stopping `mysql`... (might take a while)
+==> Successfully stopped `mysql` (label: homebrew.mxcl.mysql)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql.server start
+Starting MySQL
+.. ERROR! The server quit without updating PID file (/opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid).
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql.server stop 
+ ERROR! MySQL server PID file could not be found!
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew services start mysql
+==> Successfully started `mysql` (label: homebrew.mxcl.mysql)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ %  mysql -u root
+ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql_secure_installation
+
+Securing the MySQL server deployment.
+
+Enter password for user root: 
+Error: Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew services start mysql
+Bootstrap failed: 5: Input/output error
+Try re-running the command as root for richer errors.
+Error: Failure while executing; `/bin/launchctl bootstrap gui/501 /Users/suzukitakuya/Library/LaunchAgents/homebrew.mxcl.mysql.plist` exited with 5.
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew services stop mysql 
+Stopping `mysql`... (might take a while)
+==> Successfully stopped `mysql` (label: homebrew.mxcl.mysql)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew services start mysql
+==> Successfully started `mysql` (label: homebrew.mxcl.mysql)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % cat /opt/homebrew/var/mysql/$(hostname).err | grep "\[ERROR\]" | sort | uniq | tail -n 10
+
+2023-12-21T08:42:38.430908Z 0 [ERROR] [MY-010268] [Server] Unable to setup unix socket lock file.
+2023-12-21T08:42:38.430913Z 0 [ERROR] [MY-010119] [Server] Aborting
+2023-12-21T08:42:43.041546Z 0 [ERROR] [MY-010123] [Server] Fatal error: Please read "Security" section of the manual to find out how to run mysqld as root!
+2023-12-21T08:42:43.041583Z 0 [ERROR] [MY-010119] [Server] Aborting
+2023-12-21T08:42:52.688651Z 0 [ERROR] [MY-010273] [Server] Could not create unix socket lock file /var/run/mysqld/mysqld.sock.lock.
+2023-12-21T08:42:52.688660Z 0 [ERROR] [MY-010268] [Server] Unable to setup unix socket lock file.
+2023-12-21T08:42:52.688666Z 0 [ERROR] [MY-010119] [Server] Aborting
+2023-12-21T08:42:53.365790Z 0 [ERROR] [MY-010123] [Server] Fatal error: Please read "Security" section of the manual to find out how to run mysqld as root!
+2023-12-21T08:42:53.365824Z 0 [ERROR] [MY-010119] [Server] Aborting
+Error on delete of '/opt/homebrew/var/mysql/mysqld_tmp_file_case_insensitive_test.lower-test' (OS errno 2 - No such file or directory)2023-12-11T17:12:41.694248Z 0 [ERROR] [MY-010123] [Server] Fatal error: Please read "Security" section of the manual to find out how to run mysqld as root!
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % ls -ld /var/run/mysqld/
+
+drwxr-xr-x  2 _mysql  _mysql  64 11 13 23:25 /var/run/mysqld/
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo chown mysql:mysql /var/run/mysqld/
+Password:
+Sorry, try again.
+Password:
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo chmod 755 /var/run/mysqld/
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql_secure_installation                                                      
+
+Securing the MySQL server deployment.
+
+Enter password for user root: 
+Error: Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % ls -l /opt/homebrew/var/mysql/mysqld_tmp_file_case_insensitive_test.lower-test
+
+ls: /opt/homebrew/var/mysql/mysqld_tmp_file_case_insensitive_test.lower-test: No such file or directory
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % ls -lh /path/to/mysql/data/directory/undo_00*
+
+zsh: no matches found: /path/to/mysql/data/directory/undo_00*
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % ls -lh /opt/homebrew/var/mysql/undo_00*      
+-rw-r-----  1 suzukitakuya  admin    16M 12 22 15:23 /opt/homebrew/var/mysql/undo_001
+-rw-r-----  1 suzukitakuya  admin    16M 12 22 15:23 /opt/homebrew/var/mysql/undo_002
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % SHOW ENGINE INNODB STATUS;
+zsh: command not found: SHOW
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo chown -R _mysql:_mysql /opt/homebrew/var/mysql
+Password:
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew services start mysql
+==> Successfully started `mysql` (label: homebrew.mxcl.mysql)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql_secure_installation
+
+Securing the MySQL server deployment.
+
+Enter password for user root: 
+Error: Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo touch /tmp/mysql.sock                          
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql_secure_installation 
+
+Securing the MySQL server deployment.
+
+Enter password for user root: 
+Error: Can't connect to local MySQL server through socket '/tmp/mysql.sock' (38)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo chown mysql:mysql /tmp
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql_secure_installation  
+
+Securing the MySQL server deployment.
+
+Enter password for user root: 
+Error: Can't connect to local MySQL server through socket '/tmp/mysql.sock' (38)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql.server start
+Starting MySQL
+./opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 199: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+ ERROR! The server quit without updating PID file (/opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid).
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % cat /opt/homebrew/var/mysql/$(hostname).err | grep "\[ERROR\]" | sort | uniq | tail -n 10
+
+cat: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo cat /opt/homebrew/var/mysql/$(hostname).err | grep "\[ERROR\]" | sort | uniq | tail -n 10
+Password:
+2023-12-22T07:03:02.124565Z 0 [ERROR] [MY-010119] [Server] Aborting
+2023-12-22T07:03:12.404400Z 0 [ERROR] [MY-010123] [Server] Fatal error: Please read "Security" section of the manual to find out how to run mysqld as root!
+2023-12-22T07:03:12.404487Z 0 [ERROR] [MY-010119] [Server] Aborting
+2023-12-22T07:03:22.706326Z 0 [ERROR] [MY-010123] [Server] Fatal error: Please read "Security" section of the manual to find out how to run mysqld as root!
+2023-12-22T07:03:22.706368Z 0 [ERROR] [MY-010119] [Server] Aborting
+2023-12-22T07:03:32.992977Z 0 [ERROR] [MY-010123] [Server] Fatal error: Please read "Security" section of the manual to find out how to run mysqld as root!
+2023-12-22T07:03:32.993351Z 0 [ERROR] [MY-010119] [Server] Aborting
+2023-12-22T07:03:43.271981Z 0 [ERROR] [MY-010123] [Server] Fatal error: Please read "Security" section of the manual to find out how to run mysqld as root!
+2023-12-22T07:03:43.272020Z 0 [ERROR] [MY-010119] [Server] Aborting
+Error on delete of '/opt/homebrew/var/mysql/mysqld_tmp_file_case_insensitive_test.lower-test' (OS errno 2 - No such file or directory)2023-12-11T17:12:41.694248Z 0 [ERROR] [MY-010123] [Server] Fatal error: Please read "Security" section of the manual to find out how to run mysqld as root!
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo mysql.server start
+Starting MySQL
+. SUCCESS! 
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql_secure_installation
+
+Securing the MySQL server deployment.
+
+Enter password for user root: 
+Error: Can't connect to local MySQL server through socket '/tmp/mysql.sock' (38)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql.server stop     
+touch: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid.shutdown: Permission denied
+cat: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid: Permission denied
+ ERROR! MySQL server process # is not running!
+override rw-r----- _mysql/_mysql for /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid?             
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo touch /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid.shutdown
+Password:
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo cat /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid
+9281
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql.server stop                                                              
+touch: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid.shutdown: Permission denied
+cat: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid: Permission denied
+ ERROR! MySQL server process # is not running!
+override rw-r----- _mysql/_mysql for /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid? 
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo chown $(whoami) /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo chmod u+rw /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql.server stop                                                               
+touch: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid.shutdown: Permission denied
+ ERROR! MySQL server process #9281 is not running!
+rm: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid: Permission denied
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo chown $(whoami) /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid
+sudo chmod u+rw /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo rm /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql.server stop                                                               
+ ERROR! MySQL server PID file could not be found!
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo mysql.server start                                                         
+Starting MySQL
+..................................^C
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew services stop mysql
+Stopping `mysql`... (might take a while)
+==> Successfully stopped `mysql` (label: homebrew.mxcl.mysql)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo mysql.server start 
+Starting MySQL
+..........................^C
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo mysql.server stop 
+ ERROR! MySQL server PID file could not be found!
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo touch /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % echo 9281 > /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid
+zsh: permission denied: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo echo 9281 > /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid
+
+zsh: permission denied: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew remove mysql
+Uninstalling /opt/homebrew/Cellar/mysql/8.2.0_1... (326 files, 308.7MB)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew uninstall mysql
+Error: No such keg: /opt/homebrew/Cellar/mysql
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew cleanup
+Warning: Skipping ca-certificates: most recent version 2023-12-12 not installed
+Removing: /Users/suzukitakuya/Library/Caches/Homebrew/ca-certificates--2023-08-22... (125.2KB)
+Warning: Skipping openssl@3: most recent version 3.2.0_1 not installed
+==> This operation has freed approximately 125.2KB of disk space.
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew install mysql
+==> Auto-updated Homebrew!
+Updated 2 taps (homebrew/core and homebrew/cask).
+==> New Formulae
+dotter
+==> New Casks
+heynote                            imazing-profile-editor             keyboard-cowboy                    lw-scanner                         roam                               xact
+
+You have 2 outdated formulae installed.
+
+==> Downloading https://ghcr.io/v2/homebrew/core/mysql/manifests/8.2.0_1
+Already downloaded: /Users/suzukitakuya/Library/Caches/Homebrew/downloads/76942c24dd093d4f935ed9c73b0b9b1acf9e6a9b58b246bf75af000362b0578d--mysql-8.2.0_1.bottle_manifest.json
+==> Fetching mysql
+==> Downloading https://ghcr.io/v2/homebrew/core/mysql/blobs/sha256:46f8879999ac802d00a1cefb2333cc9e6cde0a0969bb78a80b4aa20a1d0cf2ac
+Already downloaded: /Users/suzukitakuya/Library/Caches/Homebrew/downloads/c17c2fe4b317ece1774dbcbd29585dab9f6a25e98aa6b7effb05c3df36038689--mysql--8.2.0_1.arm64_monterey.bottle.tar.gz
+==> Pouring mysql--8.2.0_1.arm64_monterey.bottle.tar.gz
+==> /opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld --initialize-insecure --user=suzukitakuya --basedir=/opt/homebrew/Cellar/mysql/8.2.0_1 --datadir=/opt/homebrew/var/mysql --tmpdir=/tmp
+Last 15 lines from /Users/suzukitakuya/Library/Logs/Homebrew/mysql/post_install.01.mysqld:
+
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld
+--initialize-insecure
+--user=suzukitakuya
+--basedir=/opt/homebrew/Cellar/mysql/8.2.0_1
+--datadir=/opt/homebrew/var/mysql
+--tmpdir=/tmp
+
+2023-12-23T23:50:40.501281Z 0 [System] [MY-015017] [Server] MySQL Server Initialization - start.
+2023-12-23T23:50:40.502446Z 0 [System] [MY-013169] [Server] /opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld (mysqld 8.2.0) initializing of server in progress as process 34968
+2023-12-23T23:50:40.528732Z 0 [ERROR] [MY-010457] [Server] --initialize specified but the data directory has files in it. Aborting.
+2023-12-23T23:50:40.528736Z 0 [ERROR] [MY-013236] [Server] The designated data directory /opt/homebrew/var/mysql/ is unusable. You can remove all files that the server added to it.
+2023-12-23T23:50:40.528766Z 0 [ERROR] [MY-010119] [Server] Aborting
+2023-12-23T23:50:40.529064Z 0 [System] [MY-010910] [Server] /opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld: Shutdown complete (mysqld 8.2.0)  Homebrew.
+2023-12-23T23:50:40.529256Z 0 [System] [MY-015018] [Server] MySQL Server Initialization - end.
+Warning: The post-install step did not complete successfully
+You can try again using:
+  brew postinstall mysql
+==> Caveats
+We've installed your MySQL database without a root password. To secure it run:
+    mysql_secure_installation
+
+MySQL is configured to only allow connections from localhost by default
+
+To connect run:
+    mysql -u root
+
+To start mysql now and restart at login:
+  brew services start mysql
+Or, if you don't want/need a background service you can just run:
+  /opt/homebrew/opt/mysql/bin/mysqld_safe --datadir\=/opt/homebrew/var/mysql
+==> Summary
+🍺  /opt/homebrew/Cellar/mysql/8.2.0_1: 326 files, 308.7MB
+==> Running `brew cleanup mysql`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew services start mysql
+==> Successfully started `mysql` (label: homebrew.mxcl.mysql)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew services stop mysql 
+Stopping `mysql`... (might take a while)
+==> Successfully stopped `mysql` (label: homebrew.mxcl.mysql)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql.server start
+Starting MySQL
+./opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 199: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+ ERROR! The server quit without updating PID file (/opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid).
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo mysql.server stsrt
+Password:
+Sorry, try again.
+Password:
+Usage: mysql.server  {start|stop|restart|reload|force-reload|status}  [ MySQL server options ]
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo mysql.server start
+Starting MySQL
+...^C
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew uninstall mysql 
+Uninstalling /opt/homebrew/Cellar/mysql/8.2.0_1... (326 files, 308.7MB)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew cleanup
+Warning: Skipping ca-certificates: most recent version 2023-12-12 not installed
+Warning: Skipping openssl@3: most recent version 3.2.0_1 not installed
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew list
+==> Formulae
+abseil		jsoncpp		libfido2	protobuf	zlib
+ca-certificates	libcbor		lz4		protobuf@21	zstd
+icu4c		libevent	openssl@3	xz
+
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo rm -rf /usr/local/Cellar/mysql*
+sudo rm -rf /usr/local/bin/mysql*
+sudo rm -rf /usr/local/var/mysql*
+sudo rm -rf /usr/local/etc/my.cnf
+sudo rm -rf /usr/local/share/mysql*
+sudo rm -rf /usr/local/opt/mysql*
+sudo rm -rf /etc/my.cnf
+sudo rm -rf /usr/local/mysql
+sudo rm ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+sudo rm -rf /Library/StartupItems/MySQLCOM
+sudo rm -rf /Library/PreferencePanes/My*
+sudo rm -rf /Library/Receipts/mysql*
+sudo rm -rf /private/var/db/receipts/*mysql*
+sudo rm /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
+zsh: no matches found: /usr/local/Cellar/mysql*
+zsh: no matches found: /usr/local/bin/mysql*
+zsh: no matches found: /usr/local/var/mysql*
+Password:
+zsh: no matches found: /usr/local/share/mysql*
+zsh: no matches found: /usr/local/opt/mysql*
+rm: /Users/suzukitakuya/Library/LaunchAgents/homebrew.mxcl.mysql.plist: No such file or directory
+zsh: no matches found: /Library/PreferencePanes/My*
+zsh: no matches found: /Library/Receipts/mysql*
+zsh: no matches found: /private/var/db/receipts/*mysql*
+rm: /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist: No such file or directory
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql –help | grep my.cnf
+zsh: command not found: mysql
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % ps aux | grep mysqwl
+suzukitakuya      2705   0.0  0.0 408636560   1744 s000  S+    5:50PM   0:00.00 grep mysqwl
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % ps aux | grep mysql 
+_mysql            9281   0.0  0.1 409655680   5744 s000  S    221223    9:38.97 /opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld --basedir=/opt/homebrew/Cellar/mysql/8.2.0_1 --datadir=/opt/homebrew/var/mysql --plugin-dir=/opt/homebrew/Cellar/mysql/8.2.0_1/lib/plugin --user=mysql --log-error=suzukitakuyanoMacBook-Air.local.err --pid-file=/opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid --socket=/var/run/mysqld/mysqld.sock
+root              9045   0.0  0.0 408640160    672 s000  S    221223    0:00.01 /bin/sh /opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe --datadir=/opt/homebrew/var/mysql --pid-file=/opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid
+suzukitakuya      2708   0.0  0.0 408645776   1920 s000  S+    5:50PM   0:00.00 grep mysql
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % kill −15 9281
+kill: illegal pid: −15
+kill: kill 9281 failed: operation not permitted
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % kill -9 9281
+kill: kill 9281 failed: operation not permitted
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % kill -9 9045
+kill: kill 9045 failed: operation not permitted
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % ps aux | grep mysql
+_mysql            9281   0.1  0.1 409655680   5360 s000  S    221223    9:39.60 /opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld --basedir=/opt/homebrew/Cellar/mysql/8.2.0_1 --datadir=/opt/homebrew/var/mysql --plugin-dir=/opt/homebrew/Cellar/mysql/8.2.0_1/lib/plugin --user=mysql --log-error=suzukitakuyanoMacBook-Air.local.err --pid-file=/opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid --socket=/var/run/mysqld/mysqld.sock
+root              9045   0.0  0.0 408640160    656 s000  S    221223    0:00.01 /bin/sh /opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe --datadir=/opt/homebrew/var/mysql --pid-file=/opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid
+suzukitakuya      2742   0.0  0.0 408637584   1808 s000  S+    5:54PM   0:00.00 grep mysql
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo kill -9 9281  
+Password:
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % /opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 199:  9281 Killed: 9               env MYSQLD_PARENT_PID=9045 nohup /opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld --basedir=/opt/homebrew/Cellar/mysql/8.2.0_1 --datadir=/opt/homebrew/var/mysql --plugin-dir=/opt/homebrew/Cellar/mysql/8.2.0_1/lib/plugin --user=mysql --log-error=suzukitakuyanoMacBook-Air.local.err --pid-file=/opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid --socket=/var/run/mysqld/mysqld.sock < /dev/null > /dev/null 2>&1
+                   
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo kill -9 9045
+kill: 9045: No such process
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % ps aux | grep mysql
+suzukitakuya      2770   0.0  0.0 408629392   1696 s000  R+    5:55PM   0:00.00 grep mysql
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew install mysql
+Running `brew update --auto-update`...
+==> Auto-updated Homebrew!
+Updated 2 taps (homebrew/core and homebrew/cask).
+==> New Formulae
+cargo-llvm-cov            jot                       pivit                     veilid
+doltgres                  libnsbmp                  sugarjar                  vulkan-volk
+halp                      libwapcaplet              texi2mdoc                 wasmedge
+hopscotch-map             netsurf-buildsystem       urlscan
+==> New Casks
+creality-print                    ollama                            pile
+geekbench-ml                      opencat                           streammusic
+lightburn                         openthesaurus-deutsch             wakatime
+
+You have 2 outdated formulae installed.
+
+==> Downloading https://ghcr.io/v2/homebrew/core/mysql/manifests/8.2.0_1
+Already downloaded: /Users/suzukitakuya/Library/Caches/Homebrew/downloads/76942c24dd093d4f935ed9c73b0b9b1acf9e6a9b58b246bf75af000362b0578d--mysql-8.2.0_1.bottle_manifest.json
+==> Fetching mysql
+==> Downloading https://ghcr.io/v2/homebrew/core/mysql/blobs/sha256:46f8879999ac802d00a1cefb2333cc9e6c
+Already downloaded: /Users/suzukitakuya/Library/Caches/Homebrew/downloads/c17c2fe4b317ece1774dbcbd29585dab9f6a25e98aa6b7effb05c3df36038689--mysql--8.2.0_1.arm64_monterey.bottle.tar.gz
+==> Pouring mysql--8.2.0_1.arm64_monterey.bottle.tar.gz
+==> /opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld --initialize-insecure --user=suzukitakuya --basedir=
+Last 15 lines from /Users/suzukitakuya/Library/Logs/Homebrew/mysql/post_install.01.mysqld:
+
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld
+--initialize-insecure
+--user=suzukitakuya
+--basedir=/opt/homebrew/Cellar/mysql/8.2.0_1
+--datadir=/opt/homebrew/var/mysql
+--tmpdir=/tmp
+
+2024-01-05T08:56:29.584047Z 0 [System] [MY-015017] [Server] MySQL Server Initialization - start.
+2024-01-05T08:56:29.592651Z 0 [System] [MY-013169] [Server] /opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld (mysqld 8.2.0) initializing of server in progress as process 4169
+2024-01-05T08:56:29.621520Z 0 [ERROR] [MY-010457] [Server] --initialize specified but the data directory has files in it. Aborting.
+2024-01-05T08:56:29.621523Z 0 [ERROR] [MY-013236] [Server] The designated data directory /opt/homebrew/var/mysql/ is unusable. You can remove all files that the server added to it.
+2024-01-05T08:56:29.621552Z 0 [ERROR] [MY-010119] [Server] Aborting
+2024-01-05T08:56:29.622375Z 0 [System] [MY-010910] [Server] /opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld: Shutdown complete (mysqld 8.2.0)  Homebrew.
+2024-01-05T08:56:29.622553Z 0 [System] [MY-015018] [Server] MySQL Server Initialization - end.
+Warning: The post-install step did not complete successfully
+You can try again using:
+  brew postinstall mysql
+==> Caveats
+We've installed your MySQL database without a root password. To secure it run:
+    mysql_secure_installation
+
+MySQL is configured to only allow connections from localhost by default
+
+To connect run:
+    mysql -u root
+
+To start mysql now and restart at login:
+  brew services start mysql
+Or, if you don't want/need a background service you can just run:
+  /opt/homebrew/opt/mysql/bin/mysqld_safe --datadir\=/opt/homebrew/var/mysql
+==> Summary
+🍺  /opt/homebrew/Cellar/mysql/8.2.0_1: 326 files, 308.7MB
+==> Running `brew cleanup mysql`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew services start myswl
+Error: No available formula with the name "myswl". Did you mean mysql?
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew services start mysql
+==> Successfully started `mysql` (label: homebrew.mxcl.mysql)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew services stop mysql
+Stopping `mysql`... (might take a while)
+==> Successfully stopped `mysql` (label: homebrew.mxcl.mysql)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew services start mysql
+==> Successfully started `mysql` (label: homebrew.mxcl.mysql)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql_secure_installation
+
+Securing the MySQL server deployment.
+
+Enter password for user root: 
+Error: Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo touch /tmp/mysql.sock
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql_secure_installation 
+
+Securing the MySQL server deployment.
+
+Enter password for user root: 
+Error: Can't connect to local MySQL server through socket '/tmp/mysql.sock' (38)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo chown mysql:mysql /tmp
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql_secure_installation  
+
+Securing the MySQL server deployment.
+
+Enter password for user root: 
+Error: Can't connect to local MySQL server through socket '/tmp/mysql.sock' (38)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo chown mysql:mysql /tmp 
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql_secure_installation   
+
+Securing the MySQL server deployment.
+
+Enter password for user root: 
+Error: Can't connect to local MySQL server through socket '/tmp/mysql.sock' (38)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql.server atar           
+Usage: mysql.server  {start|stop|restart|reload|force-reload|status}  [ MySQL server options ]
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql.server start
+Starting MySQL
+./opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 199: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+ ERROR! The server quit without updating PID file (/opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid).
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % cat /opt/homebrew/var/mysql/$(hostname).err | grep "\[ERROR\]" | sort | uniq | tail -n 10
+cat: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo cat /opt/homebrew/var/mysql/$(hostname).err | grep "\[ERROR\]" | sort | uniq | tail -n 10
+2024-01-05T09:04:43.949227Z 0 [ERROR] [MY-010119] [Server] Aborting
+2024-01-05T09:04:54.389989Z 0 [ERROR] [MY-010123] [Server] Fatal error: Please read "Security" section of the manual to find out how to run mysqld as root!
+2024-01-05T09:04:54.390192Z 0 [ERROR] [MY-010119] [Server] Aborting
+2024-01-05T09:05:04.720074Z 0 [ERROR] [MY-010123] [Server] Fatal error: Please read "Security" section of the manual to find out how to run mysqld as root!
+2024-01-05T09:05:04.720123Z 0 [ERROR] [MY-010119] [Server] Aborting
+2024-01-05T09:05:15.057344Z 0 [ERROR] [MY-010123] [Server] Fatal error: Please read "Security" section of the manual to find out how to run mysqld as root!
+2024-01-05T09:05:15.057394Z 0 [ERROR] [MY-010119] [Server] Aborting
+2024-01-05T09:05:25.390311Z 0 [ERROR] [MY-010123] [Server] Fatal error: Please read "Security" section of the manual to find out how to run mysqld as root!
+2024-01-05T09:05:25.390364Z 0 [ERROR] [MY-010119] [Server] Aborting
+Error on delete of '/opt/homebrew/var/mysql/mysqld_tmp_file_case_insensitive_test.lower-test' (OS errno 2 - No such file or directory)2023-12-11T17:12:41.694248Z 0 [ERROR] [MY-010123] [Server] Fatal error: Please read "Security" section of the manual to find out how to run mysqld as root!
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo mysql.server start
+Starting MySQL
+.. SUCCESS! 
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo mysql.server stop
+Shutting down MySQL
+. SUCCESS! 
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo mysql.server start
+Starting MySQL
+. SUCCESS! 
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql_secure_installation
+
+Securing the MySQL server deployment.
+
+Enter password for user root: 
+Error: Can't connect to local MySQL server through socket '/tmp/mysql.sock' (38)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo mysql.server stop   
+Shutting down MySQL
+. SUCCESS! 
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew services stop mysql
+Stopping `mysql`... (might take a while)
+==> Successfully stopped `mysql` (label: homebrew.mxcl.mysql)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % ps aux | grep mysql         
+suzukitakuya     26177   0.0  0.0 408636560   1680 s000  S+   12:06AM   0:00.00 grep mysql
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % chown mysql:mysql mysql.log
+chown: mysql.log: No such file or directory
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % chown mysql:mysql mysql.pid
+chown: mysql.pid: No such file or directory
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql.server start
+Starting MySQL
+./opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 199: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+ ERROR! The server quit without updating PID file (/opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid).
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % which mysql
+/opt/homebrew/bin/mysql
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql --version
+mysql  Ver 8.2.0 for macos12.6 on arm64 (Homebrew)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % ps aux | grep mysql        
+suzukitakuya     32035   0.0  0.0 408646800   1904 s000  S+   12:14AM   0:00.00 grep mysql
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % ls -la /usr/local/var/mysql
+ls: /usr/local/var/mysql: No such file or directory
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % ls -la /opt/homebrew/bin/mysql
+lrwxr-xr-x  1 suzukitakuya  admin  33  1  5 17:56 /opt/homebrew/bin/mysql -> ../Cellar/mysql/8.2.0_1/bin/mysql
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo chown -R $USER /opt/homebrew/bin/mysql
+Password:
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql.server start                         
+Starting MySQL
+./opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 199: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+ ERROR! The server quit without updating PID file (/opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid).
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo touch /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql.server start
+Starting MySQL
+./opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 199: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+ ERROR! The server quit without updating PID file (/opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid).
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % cd /opt/homebrew/bin/mysql
+cd: not a directory: /opt/homebrew/bin/mysql
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % cd /opt/homebrew/bin      
+suzukitakuya@suzukitakuyanoMacBook-Air bin % ls
+brew				mysql				mysqltest
+c_rehash			mysql.server			mysqltest_safe_process
+comp_err			mysql_client_test		mysqlxtest
+event_rpcgen.py			mysql_config			openssl
+fido2-assert			mysql_config_editor		perror
+fido2-cred			mysql_keyring_encryption_test	protoc
+fido2-token			mysql_migrate_keyring		protoc-25.1.0
+ibd2sdi				mysql_secure_installation	pzstd
+innochecksum			mysql_ssl_rsa_setup		unlz4
+lz4				mysql_test_event_tracking	unlzma
+lz4c				mysql_tzinfo_to_sql		unxz
+lz4cat				mysql_upgrade			unzstd
+lzcat				mysqladmin			xz
+lzcmp				mysqlbinlog			xzcat
+lzdiff				mysqlcheck			xzcmp
+lzegrep				mysqld				xzdec
+lzfgrep				mysqld_multi			xzdiff
+lzgrep				mysqld_safe			xzegrep
+lzless				mysqldump			xzfgrep
+lzma				mysqldumpslow			xzgrep
+lzmadec				mysqlimport			xzless
+lzmainfo			mysqlpump			xzmore
+lzmore				mysqlrouter			zlib_decompress
+my_print_defaults		mysqlrouter_keyring		zstd
+myisam_ftdump			mysqlrouter_passwd		zstdcat
+myisamchk			mysqlrouter_plugin_info		zstdgrep
+myisamlog			mysqlshow			zstdless
+myisampack			mysqlslap			zstdmt
+suzukitakuya@suzukitakuyanoMacBook-Air bin % cdcd
+zsh: command not found: cdcd
+suzukitakuya@suzukitakuyanoMacBook-Air bin % cd
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % ls
+Applications	Documents	Movies		Pictures	project3
+CoalMineCanary	Downloads	Music		Public		touch
+Desktop		Library		OneDrive	project2
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew uninstall mysql
+Uninstalling /opt/homebrew/Cellar/mysql/8.2.0_1... (326 files, 308.7MB)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ %  brew uninstall --force mysql
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew cleanup -s mysql
+Removing: /Users/suzukitakuya/Library/Caches/Homebrew/mysql--8.2.0_1... (81.3MB)
+==> This operation has freed approximately 81.3MB of disk space.
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew prune
+Error: Unknown command: prune
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % rm -rf /usr/local/mysql
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % rm -rf /Library/StartupItems/MYSQL
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % rm -rf /Library/PreferencePanes/MySQL.prefPane
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % rm -rf /Library/Receipts/mysql-.pkg
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % rm -rf /usr/local/Cellar/mysql*
+zsh: no matches found: /usr/local/Cellar/mysql*
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % rm -rf /usr/local/bin/mysql*
+zsh: no matches found: /usr/local/bin/mysql*
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % rm -rf /usr/local/var/mysql*
+zsh: no matches found: /usr/local/var/mysql*
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % rm -rf /usr/local/etc/my.cnf
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % rm -rf /usr/local/share/mysql*
+zsh: no matches found: /usr/local/share/mysql*
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % rm -rf /usr/local/opt/mysql
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo rm -rf /usr/local/Cellar/mysql*
+sudo rm -rf /usr/local/bin/mysql*
+sudo rm -rf /usr/local/var/mysql*
+sudo rm -rf /usr/local/etc/my.cnf
+sudo rm -rf /usr/local/share/mysql*
+sudo rm -rf /usr/local/opt/mysql*
+sudo rm -rf /etc/my.cnf
+sudo rm -rf /usr/local/mysql
+sudo rm ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+sudo rm -rf /Library/StartupItems/MySQLCOM
+sudo rm -rf /Library/PreferencePanes/My*
+sudo rm -rf /Library/Receipts/mysql*
+sudo rm -rf /private/var/db/receipts/*mysql*
+sudo rm /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
+sudo rm -rf /opt/homebrew/var/mysql
+zsh: no matches found: /usr/local/Cellar/mysql*
+zsh: no matches found: /usr/local/bin/mysql*
+zsh: no matches found: /usr/local/var/mysql*
+Password:
+zsh: no matches found: /usr/local/share/mysql*
+zsh: no matches found: /usr/local/opt/mysql*
+rm: /Users/suzukitakuya/Library/LaunchAgents/homebrew.mxcl.mysql.plist: No such file or directory
+zsh: no matches found: /Library/PreferencePanes/My*
+zsh: no matches found: /Library/Receipts/mysql*
+zsh: no matches found: /private/var/db/receipts/*mysql*
+rm: /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist: No such file or directory
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew install mysql
+==> Downloading https://formulae.brew.sh/api/formula.jws.json
+############################################################################################### 100.0%
+==> Downloading https://formulae.brew.sh/api/cask.jws.json
+############################################################################################### 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/mysql/manifests/8.2.0_1
+Already downloaded: /Users/suzukitakuya/Library/Caches/Homebrew/downloads/76942c24dd093d4f935ed9c73b0b9b1acf9e6a9b58b246bf75af000362b0578d--mysql-8.2.0_1.bottle_manifest.json
+==> Fetching mysql
+==> Downloading https://ghcr.io/v2/homebrew/core/mysql/blobs/sha256:46f8879999ac802d00a1cefb2333cc9e6c
+############################################################################################### 100.0%
+==> Pouring mysql--8.2.0_1.arm64_monterey.bottle.tar.gz
+==> /opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld --initialize-insecure --user=suzukitakuya --basedir=
+==> Caveats
+We've installed your MySQL database without a root password. To secure it run:
+    mysql_secure_installation
+
+MySQL is configured to only allow connections from localhost by default
+
+To connect run:
+    mysql -u root
+
+To start mysql now and restart at login:
+  brew services start mysql
+Or, if you don't want/need a background service you can just run:
+  /opt/homebrew/opt/mysql/bin/mysqld_safe --datadir\=/opt/homebrew/var/mysql
+==> Summary
+🍺  /opt/homebrew/Cellar/mysql/8.2.0_1: 326 files, 308.7MB
+==> Running `brew cleanup mysql`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % which mysql
+/opt/homebrew/bin/mysql
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql --version
+mysql  Ver 8.2.0 for macos12.6 on arm64 (Homebrew)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % ps aux | grep mysql
+suzukitakuya     42029   0.0  0.0 408637584   1808 s000  S+   12:29AM   0:00.00 grep mysql
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql.server start
+Starting MySQL
+./opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 199: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+ ERROR! The server quit without updating PID file (/opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid).
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew services start mysql
+==> Successfully started `mysql` (label: homebrew.mxcl.mysql)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % brew services stop mysql 
+Stopping `mysql`... (might take a while)
+==> Successfully stopped `mysql` (label: homebrew.mxcl.mysql)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo chown -R $USER /opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe
+Password:
+Sorry, try again.
+Password:
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql.server start       
+Starting MySQL
+./opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 199: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+ ERROR! The server quit without updating PID file (/opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid).
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql -u root
+ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/tmp/mysql.sock' (38)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % cd /opt/homebrew/var/mysql
+suzukitakuya@suzukitakuyanoMacBook-Air mysql % ls
+#ib_16384_0.dblwr			mysql
+#ib_16384_1.dblwr			mysql.ibd
+#innodb_redo				performance_schema
+#innodb_temp				private_key.pem
+auto.cnf				public_key.pem
+ca-key.pem				server-cert.pem
+ca.pem					server-key.pem
+client-cert.pem				suzukitakuyanoMacBook-Air.local.err
+client-key.pem				sys
+ib_buffer_pool				undo_001
+ibdata1					undo_002
+suzukitakuya@suzukitakuyanoMacBook-Air mysql % touch suzukitakuyanoMacBook-Air.local.pid
+suzukitakuya@suzukitakuyanoMacBook-Air mysql % ls
+#ib_16384_0.dblwr			mysql
+#ib_16384_1.dblwr			mysql.ibd
+#innodb_redo				performance_schema
+#innodb_temp				private_key.pem
+auto.cnf				public_key.pem
+ca-key.pem				server-cert.pem
+ca.pem					server-key.pem
+client-cert.pem				suzukitakuyanoMacBook-Air.local.err
+client-key.pem				sys
+ib_buffer_pool				undo_001
+ibdata1					undo_002
+suzukitakuya@suzukitakuyanoMacBook-Air mysql % cd
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo chown mysql:mysql /tmp
+Password:
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % find /tmp/mysql.sock
+/tmp/mysql.sock
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % cd /tmp/mysql.sock
+cd: not a directory: /tmp/mysql.sock
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo chown -R _mysql:_mysql /opt/homebrew/var/mysql
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo mysql.server start
+Starting MySQL
+.. SUCCESS! 
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo mysql.server stop
+Shutting down MySQL
+. SUCCESS! 
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql.server start
+Starting MySQL
+./opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 199: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.2.0_1/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+ ERROR! The server quit without updating PID file (/opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid).
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo mysql.server start                            
+Starting MySQL
+. SUCCESS! 
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql -u root
+ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/tmp/mysql.sock' (38)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo mysql.server stop 
+Shutting down MySQL
+. SUCCESS! 
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql.server start
+Starting MySQL
+./opt/homebrew/Cellar/mysql/8.3.0/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.3.0/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.3.0/bin/mysqld_safe: line 199: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+/opt/homebrew/Cellar/mysql/8.3.0/bin/mysqld_safe: line 144: /opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.err: Permission denied
+ ERROR! The server quit without updating PID file (/opt/homebrew/var/mysql/suzukitakuyanoMacBook-Air.local.pid).
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo mysql.server start
+Starting MySQL
+... SUCCESS! 
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql_secure_installation
+
+Securing the MySQL server deployment.
+
+Enter password for user root: 
+Error: Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % sudo touch /tmp/mysql.sock
+Password:
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql_secure_installation 
+
+Securing the MySQL server deployment.
+
+Enter password for user root: 
+Error: Can't connect to local MySQL server through socket '/tmp/mysql.sock' (38)
+suzukitakuya@suzukitakuyanoMacBook-Air ~ % mysql -u root
+ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/tmp/mysql.sock' (38)
